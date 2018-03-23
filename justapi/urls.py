@@ -29,5 +29,5 @@ from django.contrib import admin
 from main.views import ApiView as MainApiView
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^(?P<apiname>\S*)', csrf_exempt(MainApiView.as_view())),
+    url(r'^(?P<apiname>\S*)/{0,1}', csrf_exempt(MainApiView.as_view())),
 ]
