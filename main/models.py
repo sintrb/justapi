@@ -27,3 +27,6 @@ class Note(BaseModel):
     def to_json(self):
         from base.utils import obj2dic
         return obj2dic(self, ['id', 'date', 'type', 'title', 'content', 'icon', 'image'])
+
+    def __unicode__(self):
+        return '%s %s' % (self.date, self.title)
