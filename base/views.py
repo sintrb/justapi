@@ -338,6 +338,7 @@ class ApiView(BaseView):
         self.meid = None
         starttime = time.time()
         try:
+            apiname = apiname.strip('/')
             sys_debug = self.site.setting.get('sys_debug')
             if sys_debug and (apiname == 'doc.html' or not apiname) and self.session_get('xme'):
                 return self.doc(request)
