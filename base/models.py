@@ -14,22 +14,17 @@ import json
 
 class CallMixin:
     def __getattr__(self, name):
-        '''
-        方法注入
-        '''
+        '''方法注入'''
         if name.startswith("call__"):
-              
             sps = name.split("__")
             fname = sps[1]
             try:
-#                 print fname
                 func = getattr(self, fname)
             except:
                 raise Exception("get method failed: %s(%s)" % (name, fname))
             args = sps[2:]
             return func(*args)
         return getattr(super(BaseModel, self), name)  # super(BaseModel, self).__getattr__(name)
-    pass
 
 class StatusManager(models.Manager):
     STATUS_NORMAL = 0

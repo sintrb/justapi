@@ -265,11 +265,6 @@ class ApiView(BaseView):
         res = HttpResponse(json.dumps(v, default=json_filed_default), content_type="text/json")
         return res
 
-    # def warpvalue(self, v):
-    #     if type(v) in (unicode, str):
-    #         return u'"%s"' % v.replace('"', '\\"')
-    #     else:
-    #         return json.dumps(v)
     def doc(self, request):
         apis = []
         tagmap = {}
@@ -512,42 +507,13 @@ class PageView(BaseView):
 
     def dispatch(self, request, *args, **kwargs):
         from defs import CheckException, PageException
-        if request.GET:
-            try:
-                huayitoken = request.GET.get('huayitoken')
-                hmobile = request.GET.get('mobile')
-                if huayitoken and hmobile and hmobile != self.session_get('mobile'):
-                    from huayi.utils import get_ajax
-                    res = get_ajax('get_user', {'huayitoken': huayitoken})
-                    if res and res.get('user'):
-                        userd = res.get('user')
-                        mobile = userd.get('mobile')
-                        if mobile:
-                            from user.models import User
-                            user = User.objects.filter(username=mobile).first()
-                            if user:
-                                self.set_wme(user)
-                            else:
-                                user = User(usernmae=mobile, password='', source='v', name=userd.get('nick_name', ''))
-                                if userd.get('head_image'):
-                                    user.icon = 'http://imageoss.huaeb.com/%s' % (
-                                    userd.get('head_image').replace('./', ''))
-                                user.save()
-                                self.set_wme(user)
-            except:
-                import traceback
-                traceback.print_exc()
-
         try:
             return dispatch(self, request, *args, **kwargs)
         except CheckException, e:
             return self.render_to_response(request, self.error_template_name,
                                            cxt={'error': e.message, 'stopback': True})
         except PageException, e:
-            return self.render_to_response(request, self.error_template_name,
-                                           cxt={'error': e.message, 'backurl': e.goto, 'stopback': e.stopback})
-            #         except Exception, e:
-            #             return self.render_to_response(request, self.error_template_name, cxt={'error':e.message, 'stopback':True})
+            return self.render_to_response(request, self.error_template_name, cxt={'error': e.message, 'backurl': e.goto, 'stopback': e.stopback})
 
     def render(self, request, templ, cxt):
         if cxt == None:

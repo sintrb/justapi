@@ -73,6 +73,14 @@ class Site(object, CallMixin):
 
                                         ('sys_debug', 'bool', u'系统调试', 'true', None),
                                         ('staticversion', 'text', u'静态资源版本', '', None),
+
+                                        # 七牛
+                                        ('qiniu_enable', 'bool', u'启用七牛云存储', 'False', None),
+                                        ('qiniu_access_key', 'text', u'七牛AccessKey', '', 'depend-qiniu_enable'),
+                                        ('qiniu_secret_key', 'text', u'七牛SecretKey', '', 'depend-qiniu_enable'),
+                                        ('qiniu_bucket', 'text', u'七牛空间名', '', 'depend-qiniu_enable'),
+                                        ('qiniu_prefix', 'text', u'七牛前缀', '', 'depend-qiniu_enable'),
+                                        ('qiniu_baseurl', 'text', u'七牛根地址', '', 'depend-qiniu_enable'),
             ], ckord=True, autodel=True)
         return self._setting
     
