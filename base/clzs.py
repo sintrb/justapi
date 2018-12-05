@@ -29,6 +29,13 @@ class ApiSessionStore(SessionStore):
 
 class ApiSessionMiddleware(middleware.SessionMiddleware):
     def process_request(self, request):
+        if request.method == 'POST' and 'CONTENT_TYPE' in request.META and 'json' in request.META['CONTENT_TYPE'] and request.body:
+            import json
+            try:
+                request.POST = json.loads(request.body)
+            except:
+                import traceback
+                traceback.print_exc()
         session_key = request.POST.get('_token') or request.GET.get('_token') or request.COOKIES.get(settings.SESSION_COOKIE_NAME, None) or request.COOKIES.get('_token')
         request.session = ApiSessionStore(session_key)
 
