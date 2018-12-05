@@ -32,10 +32,12 @@ class ApiView(ApiView):
         return self.getNote()
 
     @unlogin
-    def getNote(self):
+    def getNote(self, _param):
         '''获取记录'''
+        from base.utils import warp_query
         from main.models import Note
-        return Note.objects.filter().last()
+        query = Note.objects.filter()
+        return warp_query(query, param=_param).last()
 
     @unlogin
     def saveNote(self, _param):
