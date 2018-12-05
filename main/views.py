@@ -27,9 +27,9 @@ class ApiView(ApiView):
         }
 
     @unlogin
-    def getnote(self):
+    def getnote(self, _param):
         '''获取记录'''
-        return self.getNote()
+        return self.getNote(_param)
 
     @unlogin
     def getNote(self, _param):
